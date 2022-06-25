@@ -1,7 +1,6 @@
 import Background from "../UI/Background";
 import classes from "./login.module.css";
 import {Link} from 'react-router-dom';
-import Update from "../button";
 
 function LoginPage() {
     return (

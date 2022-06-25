@@ -13,10 +13,10 @@ const ObjectId = require("mongodb").ObjectId;
  
  
 // This section will help you get a list of all the records.
-Router.route("/record").get(function (req, res) {
+Router.route("/users").get(function (req, res) {
  let db_connect = dbo.getDb("users");
  db_connect
-   .collection("records")
+   .collection("users")
    .find({})
    .toArray(function (err, result) {
      if (err) throw err;
@@ -24,12 +24,13 @@ Router.route("/record").get(function (req, res) {
    });
 });
  
+
 // This section will help you get a single record by id
-Router.route("/record/:id").get(function (req, res) {
+Router.route("/users/:username").get(function (req, res) {
  let db_connect = dbo.getDb();
- let myquery = { _id: ObjectId( req.params.id )};
+ let myquery = { username: ObjectId( req.params.username )};
  db_connect
-     .collection("records")
+     .collection("users")
      .findOne(myquery, function (err, result) {
        if (err) throw err;
        res.json(result);

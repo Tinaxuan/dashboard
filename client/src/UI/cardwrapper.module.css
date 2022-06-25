@@ -1,14 +1,24 @@
 .card{
     background: url(/src/images/Container.png);
-    width: 220px;
-    height: 170px;
-    background-size:220px 170px; ;
-    margin-left: 30px;
-    padding-left: 1px;
-    position: relative;
-    display:inline-block;
-    margin-bottom: 40px;
+    
+    background-size: 100% 100%;
+   
+    cursor: pointer;
 
+}
+.card:hover{
+    background: url(/src/images/Container.png);
+    
+    background-size: 100% 100%;
+    background-color: #ffeac690;
+   
+    cursor: pointer;
+
+}
+
+.card2{
+    background: url(/src/images/Container.png);
+    background-size: 100% 100%;
 }
 
 .card_title{

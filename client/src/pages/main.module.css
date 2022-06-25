@@ -1,6 +1,9 @@
 .main_screen{
     margin-left: 9%;
     margin-right: 9%;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
 .main_screen h3{
