@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import Background from "../UI/Background";
 import classes from './register.module.css';
 import 'antd/dist/antd.css';
-import {Button, Upload} from 'antd'
+
 
 
 function RegisterPage() {
@@ -14,16 +14,54 @@ function RegisterPage() {
     const inputRef = useRef();
     // const [imageUrl, setImageUrl] = useState('');
     // const [loading, setLoading] = useState(false);
+    let msg_add;
+    const addUser = async function(username,email,password) {
+        await fetch("http://localhost:5000/users/addUser", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({username:username,email:email,password: password})
+            })
+            .then(res => res.json())
+            .then(dta => {
+                console.log(dta);
+                msg_add = dta.msg;
+                console.log(msg_add);
+            })
+            .catch(err => console.log(err))
+        // return msg
+    }
 
     function submit(event) {
         event.preventDefault();
-        console.log(usernameRef.current.value);
+        console.log(passwordRef.current.value);
+        console.log(password_t_Ref.current.value);
+        // addUser(usernameRef.current.value,emailRef.current.value, passwordRef.current.value)
+        if (passwordRef.current.value == password_t_Ref.current.value) {
+            console.log("isSamel");
+            addUser(usernameRef.current.value,emailRef.current.value, passwordRef.current.value)
+            if (msg_add === "successfully resgisted") {
+                console.log('in');
+                window.location.href="/login";
+                //change the page
+            }
+        } else {
+            console.log("isDifferent");
+            //change the colour of the check password input field
+        }
+       
+
+
     }
 
     const handleChange = (info) => {
         if(info === undefined) {
             return
         }
+        // const upload = multer({
+        //     limits: {
+        //       fileSize: 4 * 1024 * 1024,
+        //     }
+        //   });
         // input 的reference, files的内容就是你的真实的文件，用这个文件里的内容去上传，files[0]是一个blob格式的文件。
         console.log(info.target.files[0])
         // inputRef.current.style这个是input的所有css的style内容
@@ -32,30 +70,20 @@ function RegisterPage() {
         reader.readAsDataURL(info.target.files[0])
         reader.onload = () => {
             imageUrl.current.style.backgroundImage = "url("+reader.result+")";
-            // inputRef.current.style.backgroundImage = "url("+reader.result+")";
+            // var canvas = document.createElement("canvas");
 
+            // // var canvas = document.getElementById("canvas");
+            // var ctx = canvas.getContext("2d");
+
+            // // Actual resizing
+            // ctx.drawImage(img, 0, 0, 280, 280);
+            // var dataurl = canvas.toDataURL(imageFile.type);
+            // console.log(reader.result);
+            // inputRef.current.style.backgroundImage = "url("+reader.result+")";
         }
       };
     
-    // function showImage(input) {
-    //     console.log(imageUrl.current.value);
-    //     var reader = new FileReader();
-    //     const inputImage = document.getElementById('upload_image');
-    //     reader.addEventListener("load", () => {
-    //       const uploaded = reader.result;
-    //       inputImage.style.backgroundImage = `url(${uploaded})`;
-    //     });
-    //     reader.readAsDataURL(this.files[0]);
-    //     reader.onload = function(e) {
-    //         inputImage.style.backgroundImage='url()'
-    //     }
-    //     var file= input.files[0];
-    //     var url = window.URL.createObjectURL(file);
-    //     console.log(url);
-    //     this.style.src = url;
-    // }
     
-
     return (
         <div>
             <Background/>
@@ -78,6 +106,7 @@ function RegisterPage() {
                             onChange={handleChange} 
                             id='upload_image' 
                             type="file" 
+                            accept="image/*"
                             name="file" 
                             />
                         <div style={{position: 'relative', fontSize: 100, top:'-100%', zIndex:-1}}>+</div>

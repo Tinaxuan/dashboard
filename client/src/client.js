@@ -1,9 +1,9 @@
-const addUser = async function(username, email,password) {
+const addUser = async function(username,email,password,image) {
     let msg
     await fetch("/users/addUser", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: username,email:email,password: password })
+            body: JSON.stringify({ username: username,email:email,password: password})
         })
         .then(res => res.json())
         .then(dta => {
