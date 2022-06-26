@@ -1,14 +1,16 @@
 import Background from "../UI/Background";
 import classes from "./login.module.css";
-import {Link} from 'react-router-dom';
+import {Link,useHistory} from 'react-router-dom';
 import { useRef, useState } from "react";
+import { Redirect } from "react-router-dom";
 
 function LoginPage() {
     const usernameRef = useRef();
     const passwordRef = useRef();
-
+    //check the password in the database
+    const history = useHistory();
     const login_check = async function(username, password){
-        await fetch(`http://localhost:5000/users/${username}`, {
+        await fetch(`http://localhost:5000/login/${username}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json'},
                 body: JSON.stringify({password: password})
@@ -16,22 +18,26 @@ function LoginPage() {
             .then(res => res.json())
             .then(dta => {
                 console.log(dta);
-        
+                if (dta.msg === "successful") {
+                    history.push("/main");
+                }
+                
             })
             .catch(err => console.log(err))
 
     }
+    //call when the form is submit.
 
     function submit(event) {
+        event.preventDefault();
         console.log(usernameRef.current.value);
         console.log(passwordRef.current.value);
         let username = usernameRef.current.value;
         let password = passwordRef.current.value
         login_check(username,password);
 
-
     }
-    
+
     return (
         <div>
             <Background/>

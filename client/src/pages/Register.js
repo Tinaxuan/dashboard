@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import Background from "../UI/Background";
 import classes from './register.module.css';
 import 'antd/dist/antd.css';
+import {useHistory} from 'react-router-dom';
 
 
 
@@ -12,6 +13,7 @@ function RegisterPage() {
     const password_t_Ref = useRef();
     const imageUrl = useRef();
     const inputRef = useRef();
+    const history = useHistory();
     // const [imageUrl, setImageUrl] = useState('');
     // const [loading, setLoading] = useState(false);
     let msg_add;
@@ -26,6 +28,11 @@ function RegisterPage() {
                 console.log(dta);
                 msg_add = dta.msg;
                 console.log(msg_add);
+                if(msg_add==="successfully resgisted"){
+                    history.push('/login')
+                } else if (msg_add ==='Username already exists') {
+                    //the username exist turned the input boarder red
+                }
             })
             .catch(err => console.log(err))
         // return msg
@@ -43,6 +50,9 @@ function RegisterPage() {
                 console.log('in');
                 window.location.href="/login";
                 //change the page
+            } else if (msg_add="Username already exists") {
+                console.log("should change username");
+
             }
         } else {
             console.log("isDifferent");

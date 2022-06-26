@@ -28,8 +28,8 @@ Router.route("/users").get(function (req, res) {
 });
  
 
-// This section will help you get a single record by id
-Router.route("/users/:username").post(function (req, res) {
+// This section will check the login information
+Router.route("/login/:username").post(function (req, res) {
  let db_connect = dbo.getDb();
  let myquery = {name:req.params.username};
  let password = req.body.password;
@@ -42,6 +42,7 @@ Router.route("/users/:username").post(function (req, res) {
           console.log(req.session)
           req.session.user = new Object();
           req.session.user.name = user.name;
+          req.session.user.task= user.task;
           console.log("login success", req.session);
           res.json({ msg: "successful" })
          } else {
@@ -63,14 +64,59 @@ Router.route("/users/addUser").post(function (req, response) {
     password: req.body.password,
     email: req.body.email,
     images: {},
-    task: {}
+    task: []
   };
-  db_connect.collection("users").insertOne(myobj, function (err, res) {
-    if (err) throw err;
-    let msg ="successfully resgisted"
-    response.json({res,msg});
+  let myquery = {name:req.body.username};
+  db_connect.collection("users")
+  .findOne(myquery)
+  .then(userResponse => {
+    if (userResponse != null) {
+      console.log("api user exists", myobj)
+      response.status(400).json({ msg: "Username already exists" })
+    } else {
+      db_connect.collection("users").insertOne(myobj, function (err, res) {
+        if (err) throw err;
+        let msg ="successfully resgisted"
+        response.json({res,msg}); 
+      })
+    }
+  })
+  .catch(err => {
+    let msg = "Error getting user by username"
+    response.status(400).json({ msg: msg, err: "Error" });
+    console.log(msg, err);
+})
+  
+});
 
-  });
+// //This is get the task data based on the username
+// Router.route("gettask/:username").get(function(req, response){
+//   let db_connect = dbo.getDb();
+//   let username= params.username;
+//   let myquery = {name:req.params.username};
+//   db_connect.collection("users")
+//   .findOne(myquery)
+//   .then(user => {
+//     let task = user.task;
+//     res.json({task, msg:"successfully fetch"})})
+//   .catch(err => {
+//     res.status(400).json({ status: "error", msg: "could not find users" });
+//       console.log("Could not find user", err);
+//   })
+
+
+// });
+
+Router.route('/user/current').get(function(req,res,next) {
+  console.log("session", req.session);
+  console.log("current user", req.session.user);
+  if ( req.session.user ) {
+      //res.status(200).json(req.session.user);
+      res.status(200).json({msg: "Successful",session:req.session.user});
+  }
+  else {
+      res.status(200).json({msg: "You are not logged in"});
+  }
 });
  
 // This section will help you update a record by id.

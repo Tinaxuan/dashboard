@@ -12,6 +12,25 @@ function Main() {
     const [curCity, setCurCity] = useState(-1)
     const [curIcon, setCurIcon] = useState(-1)
     const [curNews, setCurNews] = useState(-1)
+    const [curUser, setCurUser] = useState(-1)
+    //get the current user information name task
+    const get_currentUser = function() {
+        fetch('http://localhost:5000/user/current')
+        .then(res => res.json())
+        .then(jsn => {
+            if (jsn.msg === "Successful") {
+                console.log(jsn.session)
+                // currentUser = jsn.session.name;
+                setCurUser(jsn.session.name);
+                // console.log("current user", currentUser)
+    
+            } else {
+                console.log(jsn.msg)        
+            }
+        })
+        .catch(err => console.log(err));
+    }
+    //get the news from the outer website
     async function fetchNews () {
         const parser = new Parser();
         const url = 'http://feeds.bbci.co.uk/news/rss.xml'
@@ -27,6 +46,7 @@ function Main() {
          // feed will have a `foo` property, type as a string
     }
     
+    //get weather information from open weather throught html position api
     const Weather_API_KEY ='d0a10211ea3d36b0a6423a104782130e'
     
     async function fetchWeather() {if(navigator.geolocation) {
@@ -53,7 +73,7 @@ function Main() {
             alert("Sorry, your browser does not support HTML5 geolocation.");
         }
     } 
-
+    //read from the json data and count them then draw the pie chart
     async function fetchCloth(){
         const url = 'https://therapy-box.co.uk/hackathon/clothing-api.php?username=swapnil';
         fetch(url)
@@ -117,6 +137,7 @@ function Main() {
         fetchWeather();
         fetchNews();
         fetchCloth();
+        get_currentUser();
     },[])
 
  
@@ -124,7 +145,7 @@ function Main() {
     return (
         <div>
             <Background/>
-            <h1>Hello there</h1>
+            <h1>Hello there, {curUser}</h1>
             <div className={classes.main_screen}>
                 <CardWrapper title='Weather' name={'no'}>
                     <div>
