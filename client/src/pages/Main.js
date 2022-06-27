@@ -52,7 +52,7 @@ function Main() {
 
   //get the current user information name task
   const get_currentUser = function () {
-    fetch("http://localhost:5000/user/current")
+    fetch("/user/current")
       .then((res) => res.json())
       .then((jsn) => {
         if (jsn.msg === "Successful") {
@@ -86,7 +86,7 @@ function Main() {
   //get the news from the outer website
   async function fetchNews() {
     const parser = new Parser();
-    const url = "http://feeds.bbci.co.uk/news/rss.xml";
+    const url = "https://feeds.bbci.co.uk/news/rss.xml";
     // const url = 'https://api.rss2json.com/v1/api.json?rss_url=http%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Frss.xml'
     // fetch(url)
     // .then(response => response.json())

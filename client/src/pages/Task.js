@@ -29,7 +29,7 @@ function TaskPage() {
     const [curClick, setCurClick] = useState(-1)
     const tasknameRef = useRef();
     const get_currentUser = async function() {
-        fetch('http://localhost:5000/user/current')
+        fetch('/user/current')
         .then(res => res.json())
         .then(jsn => {
             if (jsn.msg === "Successful") {
@@ -61,7 +61,7 @@ function TaskPage() {
 
     const updateTask = async function(username, task) {
         let msg;
-        await fetch("http://localhost:5000/update_tasks", {
+        await fetch("/update_tasks", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({username: username, task: task })

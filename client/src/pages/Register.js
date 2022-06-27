@@ -21,7 +21,7 @@ function RegisterPage() {
     // const [loading, setLoading] = useState(false);
     let msg_add;
     const addUser = async function(username,email,password,image) {
-        await fetch("http://localhost:5000/users/addUser", {
+        await fetch("/users/addUser", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({username:username,

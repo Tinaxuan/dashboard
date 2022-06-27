@@ -9,7 +9,7 @@ function LoginPage() {
     //check the password in the database
     const history = useHistory();
     const login_check = async function(username, password){
-        await fetch(`http://localhost:5000/login/${username}`, {
+        await fetch(`/login/${username}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json'},
                 body: JSON.stringify({password: password})

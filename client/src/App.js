@@ -1,4 +1,4 @@
-import {Route} from 'react-router-dom';
+import {Route,Redirect} from 'react-router-dom';
 
 import LoginPage from './pages/LogIn';
 import RegisterPage from './pages/Register';
@@ -32,6 +32,7 @@ function App() {
     <Route path='/images'>
       <ImagePage></ImagePage>
     </Route>
+    <Route path='/' exact render={() => <Redirect to='/login'/>}/>
   </div>)
   
 }

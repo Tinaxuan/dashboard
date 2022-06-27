@@ -54,7 +54,7 @@ function ImagePage() {
   }
 
   const get_currentUser = async function () {
-    fetch("http://localhost:5000/user/current")
+    fetch("/user/current")
       .then((res) => res.json())
       .then((jsn) => {
         if (jsn.msg === "Successful") {
@@ -70,7 +70,7 @@ function ImagePage() {
 
   const updateImages = async function (username, images) {
     let msg;
-    await fetch("http://localhost:5000/update_images", {
+    await fetch("/update_images", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username: username, images: images }),
