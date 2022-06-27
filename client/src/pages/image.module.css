@@ -1,0 +1,67 @@
+.input{
+    border-color: white;
+    border-style: solid;
+    border-top-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 1px;
+    border-left-width: 0px;
+    background-color: transparent;
+    margin-bottom: 10px;
+    margin:10px 5%;
+    width:200px;
+    height: 50px;
+    
+}
+
+.input::placeholder{
+    color:white;
+    text-align: center;
+    
+}
+
+.inputField{
+    margin-top: 2%;
+    text-align: center;
+}
+
+.inputImage {
+    text-align: center;
+    margin: 2% auto;
+}
+
+.inputImage::-webkit-file-upload-button{
+    visibility: hidden;
+}
+.inputImage::target-text{
+    visibility: hidden;
+}
+
+.inputImage {
+  content: 'Add picture';
+  background: url(/src/images/Add_picture.png);
+  background-size: 100% 100%;
+  border-radius: 3px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  color: white;
+  width: 150px;
+  height: 150px;
+  align-content:center;
+  object-fit: cover;
+}
+
+.button {
+    background-color: yellow;
+    border-radius: 20%;
+    width:100px;
+    height: 50px;
+    border: 0px;
+
+}
+
+.button:hover{
+    background:yellowgreen;
+
+}

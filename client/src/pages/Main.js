@@ -6,13 +6,51 @@ import {useEffect,useState} from "react"
 import Parser from 'rss-parser';
 import * as d3 from "d3";
 import * as d4 from 'd3-collection';
+import STasklist from "../UI/STasklist";
+import ImageList from "../UI/ImageIist";
 
 function Main() {
+
+    const get_test= [
+        {
+            id:"1",
+            taskName: "start1",
+            ischecked: true,
+        },
+        {
+            id:"2",
+            taskName: "start2",
+            ischecked: true,
+        },
+        {
+            id:"3",
+            taskName: "start3",
+            ischecked: false,
+        },
+        {
+            id:"4",
+            taskName: "start4",
+            ischecked: false,
+        },
+    ];
+
+    const get_test_image= [
+        {
+            id:"1",
+            imageURL:"https://en.wikipedia.org/wiki/Image",
+        }    
+    ];
+
     const [curTemp, setCurTemp] = useState(-1)
     const [curCity, setCurCity] = useState(-1)
     const [curIcon, setCurIcon] = useState(-1)
     const [curNews, setCurNews] = useState(-1)
-    const [curUser, setCurUser] = useState(-1)
+    const [curUser, setCurUser] = useState("loading")
+    const [curImagePhoto, setCurImagePhoto] = useState("loading")
+    const [curImages, setCurImages] = useState("loading")
+    const [curTask, setCurTask] = useState(get_test)
+    let tasks_slice;
+
     //get the current user information name task
     const get_currentUser = function() {
         fetch('http://localhost:5000/user/current')
@@ -22,7 +60,23 @@ function Main() {
                 console.log(jsn.session)
                 // currentUser = jsn.session.name;
                 setCurUser(jsn.session.name);
+                setCurImagePhoto(jsn.session.image_photo);
+                setCurImages(jsn.session.images);
+                let task =  jsn.session.task;
+                if (jsn.session.task.length >3){
+                    tasks_slice = task.slice(0,3);
+                } else {
+                    tasks_slice = task;
+                }
+                setCurTask(tasks_slice)
                 // console.log("current user", currentUser)
+                // tasks_slice = curTask;
+                console.log(curTask);
+                if (curTask.length>3) {
+                    tasks_slice = tasks_slice.slice(0,3);
+                }
+                console.log(tasks_slice)
+                
     
             } else {
                 console.log(jsn.msg)        
@@ -145,26 +199,28 @@ function Main() {
     return (
         <div>
             <Background/>
+            <img width="100" margin="20" src ={curImagePhoto} alt="" />
             <h1>Hello there, {curUser}</h1>
             <div className={classes.main_screen}>
                 <CardWrapper title='Weather' name={'no'}>
-                    <div>
+                    <div style={{display: 'flex', alignItems:'center',height:'50'}}>
+                        <img style={{width:'25%'}} src ={`http://openweathermap.org/img/w/${curIcon}.png`} alt="wthr img" />
                         <h3>{`${curTemp === -1? 'loaing' : curTemp + ' degrees'}`}</h3>
-                        <img src ={`http://openweathermap.org/img/w/${curIcon}.png`} alt="wthr img" />
                     </div>
-                    <h3>{`${curCity === -1? 'loaing' : curCity}`}</h3>
+                    <h3 >{`${curCity === -1? 'loaing' : curCity}`}</h3>
                 </CardWrapper>
-                <CardWrapper title='News'link="/news">
+                <CardWrapper title='News' link="/news">
                     <h3>{curNews.title}</h3>
                 </CardWrapper>
                 <CardWrapper title='Sports' >
-                    <h3>weather shown here in detail</h3>
+                    <h3>Sports page but not done</h3>
                 </CardWrapper>
-                <CardWrapper title='Photos'>
-                    <h3>weather shown here in detail</h3>
+                <CardWrapper title='Photos'link="/images">
+                    <ImageList images={get_test_image}></ImageList>
                 </CardWrapper>
                 <CardWrapper title='Tasks'link="/tasks">
-                    <h3>weather shown here in detail</h3>
+                    {/* <h3>weather shown here in detail</h3> */}
+                    <STasklist tasks={curTask}></STasklist>
                 </CardWrapper>
                 <CardWrapper title='Cloths' name={'no'}>
                     <div id='pie'></div>

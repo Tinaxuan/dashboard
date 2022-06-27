@@ -6,6 +6,7 @@ import Main from './pages/Main';
 import NewsPage from './pages/News';
 import TaskPage from './pages/Task';
 import SportsPage from './pages/Sports';
+import ImagePage from './pages/Image';
 
 function App() {
   //localhost: 3000
@@ -27,6 +28,9 @@ function App() {
     </Route>
     <Route path='/sports'>
       <SportsPage></SportsPage>
+    </Route>
+    <Route path='/images'>
+      <ImagePage></ImagePage>
     </Route>
   </div>)
   

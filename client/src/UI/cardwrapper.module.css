@@ -26,13 +26,13 @@
     height: 38px;
     padding: 2px;
 }
-
 .card_title h2 {
     color:black;
-    margin-top:10px;
+    margin:1px;
 }
 
 .card_content{
     height:125px;
     padding: 2px;
+    margin: 5px
 }

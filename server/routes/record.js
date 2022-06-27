@@ -43,6 +43,8 @@ Router.route("/login/:username").post(function (req, res) {
           req.session.user = new Object();
           req.session.user.name = user.name;
           req.session.user.task= user.task;
+          req.session.user.image_photo= user.image_photo;
+          req.session.user.images= user.images;
           console.log("login success", req.session);
           res.json({ msg: "successful" })
          } else {
@@ -63,8 +65,9 @@ Router.route("/users/addUser").post(function (req, response) {
     name: req.body.username,
     password: req.body.password,
     email: req.body.email,
-    images: {},
-    task: []
+    image_photo: req.body.image,
+    images:[],
+    task: [],
   };
   let myquery = {name:req.body.username};
   db_connect.collection("users")
@@ -120,16 +123,49 @@ Router.route('/user/current').get(function(req,res,next) {
 });
  
 // This section will help you update a record by id.
-Router.route("/update/:id").post(function (req, response) {
- let db_connect = dbo.getDb(); 
- let myquery = { _id: ObjectId( req.params.id )}; 
- let newvalues = {   
-   $set: {     
-     name: req.body.name,    
-     position: req.body.position,     
-     level: req.body.level,   
-   }, 
+Router.route("/update_tasks").post(function (req, res) {
+  let db_connect = dbo.getDb(); 
+  let username = req.body.username;
+  let newTask = req.body.task;
+  let myquery = {name:username};
+  let newvalues = {   
+    $set: {     
+      task:newTask 
+    }, 
   }
+  db_connect.collection("users")
+    .findOne(myquery)
+    .then(userResponse => {
+      if (userResponse != null) {
+        db_connect.collection("users")
+        .updateOne(myquery,newvalues)
+        .then(updateRes =>{
+          let modifiedNumber = updateRes.modifiedCount;
+          res.json({msg:"Updated record", number:modifiedNumber})
+  
+        })
+        .then(req.session.user.task= newTask)
+        .catch(error => {
+          let msg = "Error when trying to update record"
+          res.status(400).json({ msg: msg, err: "Error" });
+          console.log(msg, err);
+        })
+
+      } else {
+        console.log("api catch username doesn't exist");
+        res.status(400).json({ msg: msg, err: "Error" });
+
+    }
+
+    })
+    .catch(err => {
+        let msg = "Error updating user by username//eariler call"
+        res.status(400).json({ msg: msg, err: "Error" });
+        console.log(msg, err);
+    })
+
+  
+
 });
  
 // This section will help you delete a record
@@ -141,6 +177,51 @@ Router.route("/:id").delete((req, response) => {
    console.log("1 document deleted");
    response.json(obj);
  });
+});
+
+Router.route("/update_images").post(function (req, res) {
+  let db_connect = dbo.getDb(); 
+  let username = req.body.username;
+  let newImages = req.body.images;
+  let myquery = {name:username};
+  let newvalues = {   
+    $set: {     
+      images:newImages 
+    }, 
+  }
+  db_connect.collection("users")
+    .findOne(myquery)
+    .then(userResponse => {
+      if (userResponse != null) {
+        db_connect.collection("users")
+        .updateOne(myquery,newvalues)
+        .then(updateRes =>{
+          let modifiedNumber = updateRes.modifiedCount;
+          res.json({msg:"Updated-image record", number:modifiedNumber})
+  
+        })
+        .then(req.session.user.images= newImages)
+        .catch(error => {
+          let msg = "Error when trying to update record"
+          res.status(400).json({ msg: msg, err: "Error" });
+          console.log(msg, err);
+        })
+
+      } else {
+        console.log("api catch username doesn't exist");
+        res.status(400).json({ msg: msg, err: "Error" });
+
+    }
+
+    })
+    .catch(err => {
+        let msg = "Error updating user by username//eariler call"
+        res.status(400).json({ msg: msg, err: "Error" });
+        console.log(msg, err);
+    })
+
+  
+
 });
  
 module.exports = Router;

@@ -3,7 +3,7 @@ import Background from "../UI/Background";
 import Parser from 'rss-parser';
 import classes from './news.module.css';
 
-const NewsPage = (props) => {
+function NewsPage () {
     const [curNews, setCurNews] = useState(-1)
     const [curImage, setCurImage] = useState(-1)
     
@@ -41,13 +41,14 @@ const NewsPage = (props) => {
 
     useEffect(()=>{
         fetchNews()
+        console.log(classes)
     },[])
     
     return (
-        <div clasName={classes.news}>
+        <div style={{color:'white', margin:50, padding: 50, backgroundColor: '#ffffff70'}} clasName={classes.news}>
             <Background/>
             <h1>News</h1>
-            <div clasName={classes.imageS}>
+            <div style={{ textAlign: 'center'}} clasName={classes.images}>
                 <img src={curImage}  width="300" height="200"></img>
             </div>
             <h2>{curNews.title}</h2>
