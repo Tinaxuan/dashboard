@@ -40,6 +40,7 @@ function RegisterPage() {
                     //change the page
                 } else if (msg_add="Username already exists") {
                     console.log("should change username");
+                    alert("Username already exsit, please change another one")
     
                 }
             })

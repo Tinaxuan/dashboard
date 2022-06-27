@@ -2,7 +2,6 @@ import Background from "../UI/Background";
 import classes from "./login.module.css";
 import {Link,useHistory} from 'react-router-dom';
 import { useRef, useState } from "react";
-import { Redirect } from "react-router-dom";
 
 function LoginPage() {
     const usernameRef = useRef();
@@ -20,6 +19,11 @@ function LoginPage() {
                 console.log(dta);
                 if (dta.msg === "successful") {
                     history.push("/main");
+                } else if (dta.msg === "it is not matched"){
+                    alert("the passward is wrong, check it again")
+                } else if (dta.msg ==="could not find users"){
+                    alert("the user doesn't exist, please register")
+
                 }
                 
             })

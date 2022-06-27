@@ -1,8 +1,8 @@
 function STask(props) {
     return(
-        <li style={{liststyle:'none'}} >
+        <div >
             <h4>{props.taskName}</h4>  
-        </li>
+        </div>
     )
 }
 

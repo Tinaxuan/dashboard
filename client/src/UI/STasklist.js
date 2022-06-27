@@ -1,8 +1,8 @@
 import STask from "./STask";
-
+//better to use the old code reuse. later might change
 function STasklist(props) {
     return(
-        <ul>
+        <div>
         {props.tasks.map((task) => (
             <STask
             key={task.id}
@@ -10,7 +10,7 @@ function STasklist(props) {
             taskName={task.taskName}  
             />
         ))}
-    </ul>   
+    </div>   
     )
 }
 

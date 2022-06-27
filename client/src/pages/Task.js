@@ -90,6 +90,7 @@ function TaskPage() {
         console.log(update_tasks);
         console.log(task_add);
         updateTask(curUser,curTask);
+        window.location.reload();
         get_currentUser();
 
         // await fetch(`http://localhost:5000/gettask/${username}`, {

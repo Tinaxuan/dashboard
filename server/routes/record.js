@@ -58,7 +58,7 @@ Router.route("/login/:username").post(function (req, res) {
   })
 });
  
-// This section will help you create a new record.
+// register:firstly check if the username is already used t
 Router.route("/users/addUser").post(function (req, response) {
   let db_connect = dbo.getDb();
   let myobj = {
@@ -110,6 +110,7 @@ Router.route("/users/addUser").post(function (req, response) {
 
 // });
 
+//get the current user from the session
 Router.route('/user/current').get(function(req,res,next) {
   console.log("session", req.session);
   console.log("current user", req.session.user);
@@ -122,7 +123,7 @@ Router.route('/user/current').get(function(req,res,next) {
   }
 });
  
-// This section will help you update a record by id.
+// This section will help you update task array
 Router.route("/update_tasks").post(function (req, res) {
   let db_connect = dbo.getDb(); 
   let username = req.body.username;
@@ -168,17 +169,7 @@ Router.route("/update_tasks").post(function (req, res) {
 
 });
  
-// This section will help you delete a record
-Router.route("/:id").delete((req, response) => {
- let db_connect = dbo.getDb();
- let myquery = { _id: ObjectId( req.params.id )};
- db_connect.collection("users").deleteOne(myquery, function (err, obj) {
-   if (err) throw err;
-   console.log("1 document deleted");
-   response.json(obj);
- });
-});
-
+//update images
 Router.route("/update_images").post(function (req, res) {
   let db_connect = dbo.getDb(); 
   let username = req.body.username;
