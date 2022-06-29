@@ -1,4 +1,4 @@
-
+import classes from "./task.module.css"
 
 function Task(props) {
     function update_checkbox() {
@@ -22,7 +22,7 @@ function Task(props) {
                 ></input>
                 
             </li>
-            <button onClick={()=>delete_task()}>delete</button>
+            <button className={classes.button28}onClick={()=>delete_task()}>delete</button>
         </div>
     )
 }

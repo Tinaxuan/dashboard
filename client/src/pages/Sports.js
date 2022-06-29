@@ -36,7 +36,7 @@ function SportsPage() {
   return (
     <div>
       <Background />
-      <button onClick={back}>Back</button>
+      <button className={classes.button} onClick={back}>Back</button>
       <h1>Sports</h1>
       <form className={classes.inputField} onSubmit={submit}>
         <input

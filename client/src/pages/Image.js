@@ -112,7 +112,7 @@ function ImagePage() {
   return (
     <div>
       <Background />
-      <button onClick={back}>Back</button>
+      <button onClick={back} className={classes.button}> &#8249;</button>
       <h1>Photos</h1>
       <ImageList images={curImages} delete_image={delete_image}></ImageList>
       <div style={{ textAlign: "center" }} title="">

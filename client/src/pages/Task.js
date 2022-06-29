@@ -132,7 +132,7 @@ function TaskPage() {
     return(
         <div>
             <Background/>
-            <button onClick={back}>Back</button>
+            <button className={classes.button} onClick={back}>Back</button>
             <h1>Task</h1>
             <TaskList tasks={curTask} callback={callback} delete_task={delete_task}></TaskList>
             <form onSubmit={submit} >
