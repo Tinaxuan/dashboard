@@ -1,5 +1,5 @@
 const express = require("express");
-
+const path = require("path");
  
 // recordRoutes is an instance of the express router.
 // We use it to define our routes.
@@ -13,6 +13,23 @@ const app = express();
 const dbo = require("../db/conn");
 const ObjectId = require("mongodb").ObjectId;
 const Router = express.Router();
+const clothData = require("../routes/clothing-api.json");
+
+const csv = require('csv-parser')
+const fs = require('fs')
+const CSVresults = [];
+
+var readStream = fs.createReadStream(path.join(__dirname, './') + 'ready.csv', 'utf8');
+
+
+  readStream.pipe(csv())
+  .on('data', (data) => CSVresults.push(data))
+  .on('end', () => {
+    // console.log(CSVresults);
+  });
+
+
+
  
  
 // This section will help you get a list of all the records.
@@ -112,8 +129,8 @@ Router.route("/users/addUser").post(function (req, response) {
 
 //get the current user from the session
 Router.route('/user/current').get(function(req,res,next) {
-  console.log("session", req.session);
-  console.log("current user", req.session.user);
+  // console.log("session", req.session);
+  // console.log("current user", req.session.user);
   if ( req.session.user ) {
       //res.status(200).json(req.session.user);
       res.status(200).json({msg: "Successful",session:req.session.user});
@@ -121,6 +138,21 @@ Router.route('/user/current').get(function(req,res,next) {
   else {
       res.status(200).json({msg: "You are not logged in"});
   }
+});
+ 
+
+Router.route('/clothdata').get(function(req,res,next) {
+    console.log("cloth");
+  //res.status(200).json(req.session.user);
+    res.status(200).json({clothData});
+
+});
+
+Router.route('/sportdata').get(function(req,res,next) {
+  console.log("sports");
+//res.status(200).json(req.session.user);
+  res.status(200).json({clothData});
+
 });
  
 // This section will help you update task array
@@ -215,4 +247,34 @@ Router.route("/update_images").post(function (req, res) {
 
 });
  
+
+Router.route("/getSports/:teamName").post(function (req, res) {
+  let teamName = req.params.teamName;
+  let teamB =[];
+
+  console.log(CSVresults[0].HomeTeam)
+  for (let i in CSVresults) {
+    if (CSVresults[i].HomeTeam===teamName && CSVresults[i].FTR==="H" ){
+      if (CSVresults[i].AwayTeam in teamB){
+        continue
+      } else {
+        teamB.push(CSVresults[i].AwayTeam)
+      }
+    }
+
+    if (CSVresults[i].AwayTeam===teamName && CSVresults[i].FTR==="A" ){
+      if (CSVresults[i].HomeTeam in teamB){
+        continue
+      } else {
+        teamB.push(CSVresults[i].HomeTeam)
+      }
+    }
+
+  }
+
+  console.log(teamB)
+  res.status(200).json({teamB});
+ });
+
+
 module.exports = Router;

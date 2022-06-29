@@ -24,6 +24,13 @@ function ImageList(props) {
     if (props.images === null) {
       return null;
     }
+
+    function delete_image(number) {
+      console.log("try to delete "+ number)
+      props.delete_image(number);
+  }
+
+
   
     return (
       <ul
@@ -35,8 +42,9 @@ function ImageList(props) {
       >
         {props.images.map((image) => {
           return (
-            <div key={image.id} id={image.id} style={{ textAlign: "center" }}>
-              <img style={{ width: "100%" }} src={image.images}></img>
+            <div key={image.id} id={image.id} style={{ padding:'5px 10px',textAlign: "center",background: '#ffffff70' }}>
+              <img style={{ width: "100%", marginBottom:"2px"}} src={image.images}></img>
+              <button onClick={()=>delete_image(image.id)}>delete</button>
             </div>
           );
         })}

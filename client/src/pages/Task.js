@@ -2,6 +2,7 @@ import Background from "../UI/Background";
 import TaskList from "../UI/TaskList";
 import { useRef, useEffect,useState } from "react";
 import classes from "./task.module.css";
+import {useHistory } from "react-router-dom";
 
 const tasks_test= [
         {
@@ -24,19 +25,21 @@ const tasks_test= [
 
 
 function TaskPage() {
+    const history = useHistory();
     const [curUser, setCurUser] = useState("loading")
     const [curTask, setCurTask] = useState(-1)
     const [curClick, setCurClick] = useState(-1)
+    const [curDelete, setCurDelete] = useState(-1)
     const tasknameRef = useRef();
     const get_currentUser = async function() {
         fetch('/user/current')
         .then(res => res.json())
         .then(jsn => {
             if (jsn.msg === "Successful") {
-                console.log(jsn.session)
+                // console.log(jsn.session)
                 setCurUser(jsn.session.name);
                 setCurTask(jsn.session.task);
-                console.log("current user", curUser)
+                console.log("current user", jsn.session)
     
             } else {
                 console.log(jsn.msg)        
@@ -48,15 +51,28 @@ function TaskPage() {
     function callback(id) {
         setCurClick(id);
         console.log(id);
-        const clickedTask = curTask[id-1];
+        const clickedTask = curTask[id];
         const newTask = {id:id,taskName:clickedTask.taskName,ischecked:!clickedTask.ischecked};
         const update_task_click = curTask;
-        update_task_click[id-1] = newTask;
+        update_task_click[id] = newTask;
         updateTask(curUser,update_task_click);
         setCurTask(update_task_click);
         console.log(curTask)
+    }
 
-
+    function delete_task(number) {
+        setCurDelete(number);
+        console.log(number);
+        let modified_task=curTask;
+        console.log("modified_task");
+        console.log(modified_task[number]);
+        for (let i=number; i<curTask.length;i++) {
+            modified_task[i].id = modified_task[i].id-1;
+        }
+        modified_task.splice(number,1);
+        // console.log(modified_task);
+        updateTask(curUser,modified_task);
+        
     }
 
     const updateTask = async function(username, task) {
@@ -82,13 +98,14 @@ function TaskPage() {
 
     function submit(event) {
         event.preventDefault();
-        const id =  curTask.length +1;
+        const id =  curTask.length;
         console.log(id);
         const task_add ={id:id, taskName:tasknameRef.current.value,ischecked: false};
         const update_tasks = curTask;
         update_tasks.push(task_add)
-        console.log(update_tasks);
-        console.log(task_add);
+        // console.log(update_tasks);
+        // console.log(task_add);
+        // console.log("update")
         updateTask(curUser,curTask);
         window.location.reload();
         get_currentUser();
@@ -108,11 +125,16 @@ function TaskPage() {
 
 
     }
+    
+    function back(){
+        history.push("/main");
+    }
     return(
         <div>
             <Background/>
+            <button onClick={back}>Back</button>
             <h1>Task</h1>
-            <TaskList tasks={curTask} callback={callback}></TaskList>
+            <TaskList tasks={curTask} callback={callback} delete_task={delete_task}></TaskList>
             <form onSubmit={submit} >
             <input className= {classes.input}  ref={tasknameRef} type="text" name="id" id="moreTask" placeholder ="Add another task" required></input>
             <button>+</button>

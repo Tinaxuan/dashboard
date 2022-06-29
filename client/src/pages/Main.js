@@ -85,17 +85,20 @@ function Main() {
   };
   //get the news from the outer website
   async function fetchNews() {
-    const parser = new Parser();
-    const url = "https://feeds.bbci.co.uk/news/rss.xml";
-    // const url = 'https://api.rss2json.com/v1/api.json?rss_url=http%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Frss.xml'
-    // fetch(url)
-    // .then(response => response.json())
-    // .then(res =>{
-    //     console.log(res);
-    // })
-    const feed = await parser.parseURL(url);
+    // const parser = new Parser();
+    // const url = "https://feeds.bbci.co.uk/news/rss.xml";
+    const url = 'https://api.rss2json.com/v1/api.json?rss_url=http%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Frss.xml'
+    fetch(url)
+    .then(response => response.json())
+    .then(res =>{
+        console.log(res);
+        const feed = res.items[0];
+        console.log(feed);
+        setCurNews(feed)
+    })
+    // const feed = await parser.parseURL(url);
     // console.log(feed.items[0].content);
-    setCurNews(feed.items[0]);
+    // setCurNews(feed.items[0]);
     // feed will have a `foo` property, type as a string
   }
 
@@ -132,11 +135,12 @@ function Main() {
   async function fetchCloth() {
     const url =
       "https://therapy-box.co.uk/hackathon/clothing-api.php?username=swapnil";
-    fetch(url)
+    fetch("/clothdata")
       .then((res) => res.json())
       .then((result) => {
         // console.log(result.payload);
-        const payload = result.payload;
+        // console.log(result);
+        const payload = result.clothData.payload;
         const allCloth = {};
         for (let i in payload) {
           if (payload[i].clothe in allCloth) {
@@ -218,7 +222,7 @@ function Main() {
         <CardWrapper title="News" link="/news">
           <h3>{curNews.title}</h3>
         </CardWrapper>
-        <CardWrapper title="Sports">
+        <CardWrapper title="Sports" link="/sports">
           <h3>Sports page: the csv link seems be removed//can't be fetched//error 301</h3>
         </CardWrapper>
         <CardWrapper title="Photos" link="/images">

@@ -13,6 +13,7 @@ function TaskList(props) {
             taskName={task.taskName}  
             defaultChecked={task.ischecked}  
             callback={props.callback}
+            delete_task={props.delete_task}
             />
         ))}
     </ul>   

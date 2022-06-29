@@ -2,16 +2,19 @@ import Background from "../UI/Background";
 import ImageList from "../UI/ImageIist";
 import { useRef, useEffect, useState } from "react";
 import classes from "./image.module.css";
+import { useHistory } from "react-router-dom";
 
 function ImagePage() {
-  const test_image = [
-    { id: 0, imageURL: "img1" },
-    { id: 1, imageURL: "img1" },
-  ];
+  const history = useHistory();
+  // const test_image = [
+  //   { id: 0, imageURL: "img1" },
+  //   { id: 1, imageURL: "img1" },
+  // ];
   const imgRef = useRef();
   const inputRef = useRef();
   const [curUser, setCurUser] = useState("loading");
-  const [curImages, setCurImages] = useState(test_image);
+  const [curImages, setCurImages] = useState(null);
+  const [curDelete, setCurDelete] = useState(null);
   var canvas = document.createElement("canvas");
   var ctx = canvas.getContext("2d");
   var cw = canvas.width;
@@ -83,6 +86,24 @@ function ImagePage() {
       .catch((err) => console.log(err));
     return msg;
   };
+  function back() {
+    history.push("/main");
+  }
+
+  function delete_image(number) {
+    setCurDelete(number);
+    console.log(number);
+    let modified_images=curImages;
+    console.log("modified_images");
+    console.log(modified_images[number]);
+    for (let i=number; i<curImages.length;i++) {
+      modified_images[i].id = modified_images[i].id-1;
+    }
+    modified_images.splice(number,1);
+    // console.log(modified_task);
+    updateImages(curUser,modified_images);
+    
+}
 
   useEffect(() => {
     get_currentUser();
@@ -91,8 +112,9 @@ function ImagePage() {
   return (
     <div>
       <Background />
+      <button onClick={back}>Back</button>
       <h1>Photos</h1>
-      <ImageList images={curImages}></ImageList>
+      <ImageList images={curImages} delete_image={delete_image}></ImageList>
       <div style={{ textAlign: "center" }} title="">
         <div ref={imgRef} className={classes.inputImage} title="">
           <input
