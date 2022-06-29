@@ -223,7 +223,7 @@ function Main() {
           <h3>{curNews.title}</h3>
         </CardWrapper>
         <CardWrapper title="Sports" link="/sports">
-          <h3>Sports page: the csv link seems be removed//can't be fetched//error 301</h3>
+          <h3>Click to see more about your team might able to defeat</h3>
         </CardWrapper>
         <CardWrapper title="Photos" link="/images">
           <SImageList images={curImages}></SImageList>
